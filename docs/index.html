@@ -142,7 +142,7 @@
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid #2a2a2a;
-      height: 400px;
+      height: 480px;
       position: relative;
     }
 
@@ -187,7 +187,7 @@
       padding: 1rem 1.25rem;
       font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
       font-size: 0.8rem;
-      line-height: 1.8;
+      line-height: 1.5;
       overflow: auto;
       flex: 1;
       white-space: pre;
@@ -490,34 +490,25 @@
       <div class="demo-editor">
         <div class="editor-tabs">
           <div class="editor-tab active" data-file="main">main.go</div>
-          <div class="editor-tab" data-file="darwin">handler_darwin.go</div>
-          <div class="editor-tab" data-file="linux">handler_linux.go</div>
         </div>
         <pre class="editor-pane active" data-file="main"><span class="kw">package</span> main
 
-<span class="kw">import</span> <span class="str">"net/http"</span>
+<span class="kw">import</span> (
+    <span class="str">"net/http"</span>
+    <span class="str">"runtime"</span>
+)
 
 <span class="kw">func</span> <span class="fn">main</span>() {
     http.<span class="fn">HandleFunc</span>(<span class="str">"/"</span>, handler)
     http.<span class="fn">ListenAndServe</span>(<span class="str">":8080"</span>, <span class="kw">nil</span>)
-}</pre>
-        <pre class="editor-pane" data-file="darwin"><span class="cm">//go:build darwin</span>
-
-<span class="kw">package</span> main
-
-<span class="kw">import</span> <span class="str">"net/http"</span>
+}
 
 <span class="kw">func</span> <span class="fn">handler</span>(w http.<span class="tp">ResponseWriter</span>, r *http.<span class="tp">Request</span>) {
-    w.<span class="fn">Write</span>([]<span class="kw">byte</span>(<span class="str">"hello from darwin"</span>))
-}</pre>
-        <pre class="editor-pane" data-file="linux"><span class="cm">//go:build linux</span>
-
-<span class="kw">package</span> main
-
-<span class="kw">import</span> <span class="str">"net/http"</span>
-
-<span class="kw">func</span> <span class="fn">handler</span>(w http.<span class="tp">ResponseWriter</span>, r *http.<span class="tp">Request</span>) {
-    w.<span class="fn">Write</span>([]<span class="kw">byte</span>(<span id="edit-target" class="str">"hello from linux"</span>))
+    <span class="kw">if</span> runtime.GOOS == <span class="str">"darwin"</span> {
+        w.<span class="fn">Write</span>([]<span class="kw">byte</span>(<span class="str">"hello from darwin"</span>))
+    } <span class="kw">else</span> {
+        w.<span class="fn">Write</span>([]<span class="kw">byte</span>(<span id="edit-target" class="str">"hello from linux"</span>))
+    }
 }</pre>
       </div>
 
@@ -707,7 +698,6 @@
           printTo(server, 'listening on :8080', 't-muted');
           printTo(shell, '[dev] $ curl localhost:8080', '');
           printTo(shell, 'hello from linux', 't-hl');
-          switchEditorTab('linux');
         }
       }
 
@@ -717,7 +707,7 @@
         await sleep(400);
         await typeIn(server, '$ go run .');
         printTo(server, 'listening on :8080', 't-muted');
-        annotate('running locally on macOS, uses <em>handler_darwin.go</em>');
+        annotate('running locally on macOS, takes the <em>darwin</em> branch');
         await sleep(1800);
 
         switchTermTab('shell');
@@ -771,7 +761,6 @@
 
       async function runScene3() {
         setTimeline(3);
-        switchEditorTab('linux');
         await sleep(1000);
         editTarget.textContent = '"hey from linux!"';
         editTarget.classList.add('edited');
