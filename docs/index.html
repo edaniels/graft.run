@@ -67,15 +67,18 @@
     .nav-logo span { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
     .nav a { font-size: 0.85rem; font-weight: 500; color: var(--text-mid); text-decoration: none; transition: color 0.15s; }
     .nav a:hover { color: var(--terra); }
+    .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-links a + a { border-left: 1px solid var(--rule); padding-left: 1.5rem; }
+    .nav-gh { display: inline-flex; align-items: center; gap: 0.35rem; }
 
     /* Hero */
-    .hero { max-width: 1000px; margin: 0 auto; padding: 1rem 3rem 0; }
+    .hero { max-width: 1000px; margin: 0 auto; padding: 1.5rem 3rem 0; }
     .hero h1 { font-family: var(--serif); font-size: 2.8rem; font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; white-space: nowrap; }
-    .hero-sub { font-size: 1.05rem; line-height: 1.65; color: var(--text-mid); margin-top: 0.75rem; max-width: 560px; }
-    .hero-getstarted { margin-top: 0.5rem; }
-    .hero-getstarted a { font-size: 0.9rem; font-weight: 500; color: var(--terra); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
-    .hero-getstarted a:hover { border-bottom-color: var(--terra); }
-    .hero-install { margin-top: 0.75rem; }
+    .hero-sub { font-size: 1.05rem; line-height: 1.65; color: var(--text-mid); margin-top: 1rem; max-width: 614px; }
+    .hero-getstarted { margin-left: .75rem; font-size: 0.9rem; font-weight: 500; color: var(--terra); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; white-space: nowrap; }
+    .hero-getstarted:hover { border-bottom-color: var(--terra); }
+    .hero-install { margin-top: 1.25rem; }
+    .install-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
 
     .install-cmd {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -90,7 +93,7 @@
     .copy-btn svg { width: 15px; height: 15px; }
 
     /* Demo */
-    .demo-section { max-width: 1000px; margin: 0 auto; padding: 0.75rem 3rem; }
+    .demo-section { max-width: 1000px; margin: 1rem auto 0; padding: 0.75rem 3rem; }
 
     .demo-container {
       display: flex; border-radius: 10px; overflow: hidden;
@@ -164,7 +167,7 @@
     .demo-timeline button.done { color: var(--green); }
 
     /* Footer */
-    footer { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1000px; padding: 0.5rem 3rem; }
+    footer { max-width: 1000px; margin: 0 auto; padding: 0.5rem 3rem; }
     .copyright { font-size: 0.75rem; color: var(--text-muted); }
 
     /* Responsive */
@@ -188,6 +191,7 @@
       .hero h1 { font-size: 1.75rem; }
       .hero-sub { font-size: 0.95rem; }
       .install-cmd { font-size: 0.65rem; padding: 0.45rem 0.6rem; }
+      .install-cmd code { white-space: normal; word-break: break-all; }
       footer { padding: 0.5rem 1rem; }
     }
   </style>
@@ -203,16 +207,17 @@
       </svg>
       <span>Graft</span>
     </div>
-    <a href="https://github.com/edaniels/graft">GitHub</a>
+    <div class="nav-links">
+      <a href="https://github.com/edaniels/graft/blob/main/docs/architecture.md">Architecture</a>
+      <a href="https://github.com/edaniels/graft" class="nav-gh"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> GitHub</a>
+    </div>
   </nav>
 
   <section class="hero">
     <h1>Stay local.</h1>
-    <p class="hero-sub">Keep your editor, your dotfiles, your workflow. Graft connects your local tools to remote machines. File sync, port forwarding, remote commands.</p>
-    <div class="hero-getstarted">
-      <a href="https://github.com/edaniels/graft?tab=readme-ov-file#quick-start">Get Started &rarr;</a>
-    </div>
+    <p class="hero-sub">Keep your editor, your dotfiles, your workflow. Work with remote files and commands as if they were local.<a class="hero-getstarted" href="https://github.com/edaniels/graft?tab=readme-ov-file#quick-start">Quick Start &rarr;</a></p>
     <div class="hero-install">
+      <div class="install-label">Install Graft</div>
       <div class="install-cmd" onclick="copyInstall(this)">
         <code>curl --proto '=https' --tlsv1.2 -sSf https://graft.run/install.sh | sh</code>
         <button class="copy-btn" aria-label="Copy to clipboard">
