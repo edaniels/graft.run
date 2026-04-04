@@ -3,490 +3,228 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Graft - Your local environment, everywhere.</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='8' fill='%230a0a0a'/><path d='M16 6 L16 34' stroke='white' stroke-width='6.5' stroke-linecap='round'/><path d='M16 16 Q22 11 32 7' stroke='%2328c840' stroke-width='5' stroke-linecap='round'/></svg>">
-  <meta name="description" content="Keep your editor, your terminal, your dotfiles. Graft connects any remote machine or container to your local environment - run commands, sync files, forward ports.">
-  <meta property="og:title" content="Graft - Your local environment, everywhere.">
-  <meta property="og:description" content="Keep your editor, your terminal, your dotfiles. Graft connects any remote machine or container to your local environment - run commands, sync files, forward ports.">
+  <title>Graft - Stay local.</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='8' fill='%232D2418'/><path d='M16 6 L16 34' stroke='%23F6F1EB' stroke-width='6.5' stroke-linecap='round'/><path d='M16 16 Q22 11 32 7' stroke='%233D6B4F' stroke-width='5' stroke-linecap='round'/></svg>">
+  <meta name="description" content="Keep your editor, your dotfiles, your workflow. Graft connects your local tools to remote machines. File sync, port forwarding, remote commands.">
+  <meta property="og:title" content="Graft - Stay local.">
+  <meta property="og:description" content="Keep your editor, your dotfiles, your workflow. Graft connects your local tools to remote machines. File sync, port forwarding, remote commands.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://graft.run">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Graft - Your local environment, everywhere.">
-  <meta name="twitter:description" content="Keep your editor, your terminal, your dotfiles. Graft connects any remote machine or container to your local environment - run commands, sync files, forward ports.">
+  <meta name="twitter:title" content="Graft - Stay local.">
+  <meta name="twitter:description" content="Keep your editor, your dotfiles, your workflow. Graft connects your local tools to remote machines. File sync, port forwarding, remote commands.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    :root {
+      --warm-bg: #F6F1EB;
+      --warm-bg-deep: #EDE6DC;
+      --cool-bg: #E8ECF1;
+      --text: #2D2418;
+      --text-mid: #6B5D4F;
+      --text-muted: #9B8E7E;
+      --green: #3D6B4F;
+      --green-light: #4E8A65;
+      --terra: #B85C38;
+      --terra-light: #D4765A;
+      --rule: #D6CEBC;
+      --code-bg-warm: #EDE6DC;
+      --code-bg-cool: #DDE3EB;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      background: #0a0a0a;
-      color: #e0e0e0;
+      font-family: var(--sans);
+      background: var(--warm-bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, var(--warm-bg) 0%, var(--warm-bg) 42%, var(--cool-bg) 72%, var(--cool-bg) 100%);
+      z-index: -1;
+    }
+
+    /* Nav */
+    .nav {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0.75rem 3rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.5rem; }
+    .nav-logo svg { width: 20px; height: 32px; }
+    .nav-logo span { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+    .nav a { font-size: 0.85rem; font-weight: 500; color: var(--text-mid); text-decoration: none; transition: color 0.15s; }
+    .nav a:hover { color: var(--terra); }
 
     /* Hero */
-    .hero {
-      text-align: center;
-      padding: 6rem 2rem 3rem;
+    .hero { max-width: 1000px; margin: 0 auto; padding: 1rem 3rem 0; }
+    .hero h1 { font-family: var(--serif); font-size: 2.8rem; font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; white-space: nowrap; }
+    .hero-sub { font-size: 1.05rem; line-height: 1.65; color: var(--text-mid); margin-top: 0.75rem; max-width: 560px; }
+    .hero-getstarted { margin-top: 0.5rem; }
+    .hero-getstarted a { font-size: 0.9rem; font-weight: 500; color: var(--terra); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
+    .hero-getstarted a:hover { border-bottom-color: var(--terra); }
+    .hero-install { margin-top: 0.75rem; }
+
+    .install-cmd {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--code-bg-warm); border: 1px solid var(--rule); border-radius: 6px;
+      padding: 0.55rem 0.8rem; font-family: var(--mono); font-size: 0.78rem;
+      color: var(--text-mid); cursor: pointer; transition: border-color 0.15s, background 0.15s;
     }
+    .install-cmd:hover { border-color: var(--terra-light); background: #E8DFD3; }
+    .install-cmd code { user-select: all; white-space: nowrap; }
+    .copy-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px; display: flex; align-items: center; transition: color 0.15s; flex-shrink: 0; }
+    .copy-btn:hover { color: var(--terra); }
+    .copy-btn svg { width: 15px; height: 15px; }
 
-    .hero-container {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.02em;
-    }
-
-    h1 svg {
-      height: 0.6em;
-      vertical-align: baseline;
-      margin: 0 -0.04em 0 0.08em;
-      user-select: none;
-    }
-
-    h1 .sr { font-size: 0; }
-
-    .tagline {
-      font-size: 1.25rem;
-      color: #888;
-      margin-top: 0.75rem;
-    }
-
-    .description {
-      font-size: 1.05rem;
-      color: #666;
-      margin-top: 1.5rem;
-      line-height: 1.6;
-    }
-
-    .cta {
-      margin-top: 2.5rem;
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .cta a {
-      display: inline-block;
-      padding: 0.7rem 1.5rem;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      text-decoration: none;
-      font-weight: 500;
-      transition: opacity 0.15s;
-    }
-
-    .cta a:hover { opacity: 0.85; }
-
-    .cta-primary {
-      background: #fff;
-      color: #0a0a0a;
-    }
-
-    .cta-secondary {
-      border: 1px solid #333;
-      color: #ccc;
-    }
-
-    /* Install copier */
-    .install-section {
-      text-align: center;
-      padding: 1rem 2rem 4rem;
-    }
-
-    .install-box {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
-      font-size: 0.9rem;
-      color: #ccc;
-      cursor: pointer;
-      transition: border-color 0.15s;
-    }
-
-    .install-box:hover { border-color: #444; }
-    .install-box code { user-select: all; }
-
-    .install-box .copy-btn {
-      background: none;
-      border: none;
-      color: #666;
-      cursor: pointer;
-      padding: 2px;
-      display: flex;
-      align-items: center;
-      transition: color 0.15s;
-    }
-
-    .install-box .copy-btn:hover { color: #aaa; }
-    .install-box .copy-btn svg { width: 16px; height: 16px; }
-
-    /* Demo section */
-    .demo-section {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 2rem 5rem;
-    }
+    /* Demo */
+    .demo-section { max-width: 1000px; margin: 0 auto; padding: 0.75rem 3rem; }
 
     .demo-container {
-      display: flex;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #2a2a2a;
-      height: 480px;
-      position: relative;
+      display: flex; border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--rule); height: 420px; position: relative;
+      box-shadow: 0 2px 20px rgba(45,36,24,0.06), 0 0 0 1px rgba(45,36,24,0.03);
     }
+    .demo-editor { width: 50%; background: var(--code-bg-warm); display: flex; flex-direction: column; border-right: 1px solid var(--rule); overflow: hidden; }
+    .demo-terminal { width: 50%; background: var(--code-bg-cool); display: flex; flex-direction: column; overflow: hidden; }
 
-    /* Demo editor */
-    .demo-editor {
-      flex: 1;
-      background: #1e1e1e;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid #2a2a2a;
-      min-width: 0;
+    .editor-tabs, .term-tabs { display: flex; border-bottom: 1px solid var(--rule); flex-shrink: 0; }
+    .editor-tab, .term-tab {
+      padding: 7px 14px; font-size: 0.68rem; font-family: var(--sans); font-weight: 500;
+      letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted);
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      cursor: pointer; white-space: nowrap; transition: color 0.15s;
     }
+    .editor-tab.active { color: var(--text-mid); border-bottom-color: var(--terra); }
+    .term-tab.active { color: var(--text-mid); border-bottom-color: var(--green); }
 
-    .editor-tabs {
-      display: flex;
-      background: #252526;
-      border-bottom: 1px solid #2a2a2a;
-      overflow-x: auto;
-      flex-shrink: 0;
+    .editor-pane, .term-pane {
+      display: none; padding: 0.9rem 1rem; font-family: var(--mono); font-size: 0.72rem;
+      line-height: 1.6; overflow: auto; flex: 1; white-space: pre; min-height: 0;
     }
+    .editor-pane.active, .term-pane.active { display: block; }
 
-    .editor-tab {
-      padding: 8px 14px;
-      font-size: 0.75rem;
-      color: #888;
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      white-space: nowrap;
-    }
+    .editor-pane { color: var(--text); }
+    .editor-pane .kw { color: var(--green); }
+    .editor-pane .str { color: var(--terra); }
+    .editor-pane .fn { color: #7A5C2E; }
+    .editor-pane .tp { color: var(--green-light); }
 
-    .editor-tab.active {
-      color: #ccc;
-      border-bottom-color: #5c9eff;
-      background: #1e1e1e;
-    }
+    #edit-target { transition: background 0.3s; border-radius: 2px; }
+    #edit-target.edited { background: rgba(184,92,56,0.15); }
 
-    .editor-pane {
-      display: none;
-      padding: 1rem 1.25rem;
-      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
-      font-size: 0.8rem;
-      line-height: 1.5;
-      overflow: auto;
-      flex: 1;
-      white-space: pre;
-      color: #d4d4d4;
-    }
+    .term-pane { color: #3A4A5C; }
+    .term-pane .t-muted { color: #8899AA; }
+    .term-pane .t-hl { color: var(--green); font-weight: 500; }
 
-    .editor-pane.active { display: block; }
-
-    .editor-pane .kw { color: #569cd6; }
-    .editor-pane .str { color: #ce9178; }
-    .editor-pane .fn { color: #dcdcaa; }
-    .editor-pane .cm { color: #6a9955; }
-    .editor-pane .tp { color: #4ec9b0; }
-
-    #edit-target {
-      transition: background 0.3s, padding 0.3s;
-      border-radius: 2px;
-    }
-
-    #edit-target.edited {
-      background: rgba(255, 200, 0, 0.2);
-      padding: 1px 3px;
-    }
-
-    /* Demo terminal */
-    .demo-terminal {
-      flex: 1;
-      background: #1a1a1a;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
-    .demo-term-header {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 14px;
-      background: #252525;
-      flex-shrink: 0;
-    }
-
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .dot.r { background: #ff5f57; }
-    .dot.y { background: #febc2e; }
-    .dot.g { background: #28c840; }
-
-    .term-tabs {
-      display: flex;
-      background: #252526;
-      border-bottom: 1px solid #2a2a2a;
-      flex-shrink: 0;
-    }
-
-    .term-tab {
-      padding: 6px 14px;
-      font-size: 0.72rem;
-      color: #888;
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      white-space: nowrap;
-    }
-
-    .term-tab.active {
-      color: #ccc;
-      border-bottom-color: #5c9eff;
-      background: #1a1a1a;
-    }
-
-    .term-pane {
-      display: none;
-      padding: 1rem;
-      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
-      font-size: 0.8rem;
-      line-height: 1.7;
-      overflow-y: auto;
-      flex: 1;
-    }
-
-    .term-pane.active { display: block; }
-
-    .term-pane .t-prompt { color: #28c840; }
-    .term-pane .t-conn { color: #5c9eff; }
-    .term-pane .t-muted { color: #888; }
-    .term-pane .t-hl { color: #28c840; font-weight: 600; }
-    .term-pane .t-dim { color: #555; }
-
-    /* Demo timeline */
-    .demo-timeline {
-      display: flex;
-      gap: 0;
-      margin-top: 0.75rem;
-    }
-
-    .demo-timeline button {
-      flex: 1;
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      color: #555;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      font-size: 0.72rem;
-      padding: 8px 6px;
-      cursor: pointer;
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
-      position: relative;
-    }
-
-    .demo-timeline button:first-child { border-radius: 6px 0 0 6px; }
-    .demo-timeline button:last-child { border-radius: 0 6px 6px 0; }
-    .demo-timeline button + button { border-left: none; }
-
-    .demo-timeline button:hover { color: #aaa; background: #1e1e1e; }
-
-    .demo-timeline button.active {
-      color: #fff;
-      border-color: #444;
-      background: #252525;
-    }
-
-    .demo-timeline button.done {
-      color: #888;
-    }
-
-    /* Demo annotation */
     #demo-annotation {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      text-align: center;
-      padding: 8px 16px;
-      font-size: 0.78rem;
-      color: #aaa;
-      background: rgba(15, 15, 15, 0.95);
-      border-top: 1px solid #2a2a2a;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-      z-index: 2;
+      position: absolute; top: -2rem; left: 0; right: 0; text-align: center;
+      padding: 5px 16px; font-size: 0.74rem; color: var(--text-mid);
+      opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 2;
     }
-
     #demo-annotation.visible { opacity: 1; }
-
-    #demo-annotation em {
-      color: #5c9eff;
-      font-style: normal;
-    }
+    #demo-annotation em { color: var(--terra); font-style: normal; font-weight: 500; }
 
     #replay-btn {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(40, 40, 40, 0.9);
-      border: 1px solid #444;
-      color: #888;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.15s, border-color 0.15s;
-      z-index: 3;
+      position: absolute; bottom: 8px; right: 8px;
+      background: rgba(237,230,220,0.9); border: 1px solid var(--rule);
+      color: var(--text-muted); width: 28px; height: 28px; border-radius: 50%;
+      cursor: pointer; display: none; align-items: center; justify-content: center;
+      transition: color 0.15s, border-color 0.15s; z-index: 3;
     }
+    #replay-btn:hover { color: var(--terra); border-color: var(--terra-light); }
+    #replay-btn svg { width: 13px; height: 13px; }
 
-    #replay-btn:hover { color: #ccc; border-color: #666; }
-    #replay-btn svg { width: 14px; height: 14px; }
-
-    /* Why section */
-    .why-section {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 2rem 6rem;
+    .demo-timeline { display: flex; margin-top: 0.5rem; }
+    .demo-timeline button {
+      flex: 1; background: var(--warm-bg); border: 1px solid var(--rule);
+      color: var(--text-muted); font-family: var(--sans); font-size: 0.68rem;
+      font-weight: 500; padding: 7px 4px; cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
-
-    .why-section h2 {
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 2.5rem;
-      letter-spacing: -0.01em;
-    }
-
-    .why-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2.5rem;
-    }
-
-    .why-col h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #ccc;
-      margin-bottom: 0.5rem;
-    }
-
-    .why-col p {
-      font-size: 0.9rem;
-      color: #666;
-      line-height: 1.6;
-    }
-
-    .why-col code {
-      font-size: 0.85em;
-      color: #888;
-    }
-
-    @media (max-width: 700px) {
-      .why-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        max-width: 400px;
-        margin: 0 auto;
-      }
-    }
-
-    /* Fade-in */
-    .fade-in-up {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-
-    .fade-in-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .demo-timeline button:first-child { border-radius: 5px 0 0 5px; }
+    .demo-timeline button:last-child { border-radius: 0 5px 5px 0; }
+    .demo-timeline button + button { border-left: none; }
+    .demo-timeline button:hover { color: var(--text-mid); background: var(--warm-bg-deep); }
+    .demo-timeline button.active { color: var(--text); border-color: var(--terra-light); background: rgba(184,92,56,0.08); }
+    .demo-timeline button.done { color: var(--green); }
 
     /* Footer */
-    footer {
-      text-align: center;
-      padding: 2rem 2rem 3rem;
-      border-top: 1px solid #1a1a1a;
+    footer { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1000px; padding: 0.5rem 3rem; }
+    .copyright { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .nav { padding: 1rem 1.5rem 0; }
+      .hero { padding: 1.5rem 1.5rem 0; }
+      .hero h1 { font-size: 1.6rem; white-space: normal; }
+      .hero-sub { max-width: none; }
+      .install-cmd { font-size: 0.7rem; }
+      .demo-section { padding: 1rem 1.5rem; }
+      .demo-container { flex-direction: column; height: auto; }
+      .demo-editor { width: 100%; border-right: none; border-bottom: 1px solid var(--rule); min-height: 200px; }
+      .demo-terminal { width: 100%; min-height: 240px; }
+      .editor-pane, .term-pane { font-size: 0.66rem; }
+      .demo-timeline button { font-size: 0.62rem; padding: 6px 2px; }
+      footer { padding: 0.5rem 1.5rem; }
     }
 
-    .copyright {
-      font-size: 0.75rem;
-      color: #333;
-    }
-
-    /* Responsive demo */
-    @media (max-width: 768px) {
-      .demo-container {
-        flex-direction: column;
-        height: auto;
-      }
-      .demo-editor {
-        border-right: none;
-        border-bottom: 1px solid #2a2a2a;
-        min-height: 220px;
-      }
-      .demo-terminal { min-height: 280px; }
-      .editor-pane { font-size: 0.7rem; }
-      #demo-term { font-size: 0.7rem; }
+    @media (max-width: 480px) {
+      .hero { padding: 1.5rem 1rem 1rem; }
+      .hero h1 { font-size: 1.75rem; }
+      .hero-sub { font-size: 0.95rem; }
+      .install-cmd { font-size: 0.65rem; padding: 0.45rem 0.6rem; }
+      footer { padding: 0.5rem 1rem; }
     }
   </style>
 </head>
 <body>
+  <div class="bg"></div>
 
-  <!-- Hero -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <svg viewBox="0 0 22 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 2 L4 33" stroke="#2D2418" stroke-width="6.5" stroke-linecap="round"/>
+        <path d="M4 13 Q10 8 20 3" stroke="#3D6B4F" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <span>Graft</span>
+    </div>
+    <a href="https://github.com/edaniels/graft">GitHub</a>
+  </nav>
+
   <section class="hero">
-    <div class="hero-container">
-      <h1>G<span class="sr">r</span><svg viewBox="0 0 22 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 2 L4 33" stroke="#fff" stroke-width="6.5" stroke-linecap="round"/><path d="M4 13 Q10 8 20 3" stroke="#28c840" stroke-width="5" stroke-linecap="round"/></svg>aft</h1>
-      <p class="tagline">Your local environment, everywhere.</p>
-      <p class="description">
-        Keep your editor, your terminal, your dotfiles.
-        Graft connects any remote machine or container to your local environment.
-        Run commands, sync files, forward ports.
-      </p>
-      <div class="cta">
-        <a href="https://github.com/edaniels/graft" class="cta-primary">GitHub</a>
-        <a href="https://github.com/edaniels/graft?tab=readme-ov-file#quick-start" class="cta-secondary">Get Started</a>
+    <h1>Stay local.</h1>
+    <p class="hero-sub">Keep your editor, your dotfiles, your workflow. Graft connects your local tools to remote machines. File sync, port forwarding, remote commands.</p>
+    <div class="hero-getstarted">
+      <a href="https://github.com/edaniels/graft?tab=readme-ov-file#quick-start">Get Started &rarr;</a>
+    </div>
+    <div class="hero-install">
+      <div class="install-cmd" onclick="copyInstall(this)">
+        <code>curl --proto '=https' --tlsv1.2 -sSf https://graft.run/install.sh | sh</code>
+        <button class="copy-btn" aria-label="Copy to clipboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- Install -->
-  <section class="install-section">
-    <div class="install-box" onclick="copyInstall(this)">
-      <code>curl --proto '=https' --tlsv1.2 -sSf https://graft.run/install.sh | sh</code>
-      <button class="copy-btn" aria-label="Copy to clipboard">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>
-      </button>
-    </div>
-  </section>
-
-  <!-- Demo -->
   <section class="demo-section">
     <div class="demo-container">
-
-      <!-- Editor -->
       <div class="demo-editor">
         <div class="editor-tabs">
           <div class="editor-tab active" data-file="main">main.go</div>
@@ -511,24 +249,15 @@
     }
 }</pre>
       </div>
-
-      <!-- Terminal -->
       <div class="demo-terminal">
-        <div class="demo-term-header">
-          <div class="dot r"></div>
-          <div class="dot y"></div>
-          <div class="dot g"></div>
-        </div>
         <div class="term-tabs">
-          <div class="term-tab active" data-term="shell">terminal</div>
-          <div class="term-tab" data-term="server">server</div>
+          <div class="term-tab active" data-term="shell">tab 1</div>
+          <div class="term-tab" data-term="server">tab 2</div>
         </div>
         <div class="term-pane active" data-term="shell" id="term-shell"></div>
         <div class="term-pane" data-term="server" id="term-server"></div>
       </div>
-
       <div id="demo-annotation"></div>
-
       <button id="replay-btn" aria-label="Replay">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="1 4 1 10 7 10"></polyline>
@@ -544,92 +273,55 @@
     </div>
   </section>
 
-  <!-- Why graft -->
-  <section class="why-section fade-in-up">
-    <h2>Why not just SSH?</h2>
-    <div class="why-grid">
-      <div class="why-col">
-        <h3>Your editor stays local</h3>
-        <p>Edit in VS Code, Vim, Emacs, whatever. Files sync to the remote automatically. No remote editor, no <code>scp</code>, no <code>rsync</code> cron.</p>
-      </div>
-      <div class="why-col">
-        <h3>Commands are transparent</h3>
-        <p>Forward <code>go</code>, <code>make</code>, or <code>cargo</code>. They run on the remote but look local. Same working directory, same output.</p>
-      </div>
-      <div class="why-col">
-        <h3>Ports just work</h3>
-        <p>Remote servers show up on localhost. No <code>ssh -L</code> tunnels, no port flags to remember.</p>
-      </div>
-    </div>
-  </section>
-
   <footer>
-    <p class="copyright">&copy; <a href="https://erdaniels.com/" style="color:#666;text-decoration:underline;">Eric Daniels</a> 2024&ndash;2026</p>
+    <p class="copyright">&copy; Eric Daniels 2024&ndash;2026</p>
   </footer>
 
   <script>
-    // Fade-in observer
-    const fadeObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.fade-in-up').forEach(el => fadeObs.observe(el));
-
-    // Copy install
     function copyInstall(el) {
-      const text = el.querySelector('code').textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = el.querySelector('.copy-btn');
-        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#28c840" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-        setTimeout(() => {
+      var text = el.querySelector('code').textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        var btn = el.querySelector('.copy-btn');
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#3D6B4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+        setTimeout(function() {
           btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
         }, 2000);
       });
     }
 
-    // Demo animation
     (function() {
-      const shell = document.getElementById('term-shell');
-      const server = document.getElementById('term-server');
-      const editorTabs = document.querySelectorAll('.editor-tab');
-      const editorPanes = document.querySelectorAll('.editor-pane');
-      const termTabs = document.querySelectorAll('.term-tab');
-      const termPanes = document.querySelectorAll('.term-pane');
-      const replayBtn = document.getElementById('replay-btn');
-      const editTarget = document.getElementById('edit-target');
-      const annotation = document.getElementById('demo-annotation');
-      const tlBtns = document.querySelectorAll('.demo-timeline button');
-      let running = false;
-      let gen = 0;
-      let runGen = 0;
+      var shell = document.getElementById('term-shell');
+      var server = document.getElementById('term-server');
+      var editorTabs = document.querySelectorAll('.editor-tab');
+      var editorPanes = document.querySelectorAll('.editor-pane');
+      var termTabs = document.querySelectorAll('.term-tab');
+      var termPanes = document.querySelectorAll('.term-pane');
+      var replayBtn = document.getElementById('replay-btn');
+      var editTarget = document.getElementById('edit-target');
+      var annotation = document.getElementById('demo-annotation');
+      var tlBtns = document.querySelectorAll('.demo-timeline button');
+      var running = false, runGen = 0;
 
       function sleep(ms) {
-        const g = runGen;
-        return new Promise((resolve, reject) => {
-          setTimeout(() => { g === runGen ? resolve() : reject('cancelled'); }, ms);
+        var g = runGen;
+        return new Promise(function(resolve, reject) {
+          setTimeout(function() { g === runGen ? resolve() : reject('cancelled'); }, ms);
         });
       }
 
-      function switchEditorTab(name) {
-        editorTabs.forEach(t => t.classList.toggle('active', t.dataset.file === name));
-        editorPanes.forEach(p => p.classList.toggle('active', p.dataset.file === name));
+      function switchTab(tabs, panes, key, val) {
+        tabs.forEach(function(t) { t.classList.toggle('active', t.dataset[key] === val); });
+        panes.forEach(function(p) { p.classList.toggle('active', p.dataset[key] === val); });
       }
 
-      function switchTermTab(name) {
-        termTabs.forEach(t => t.classList.toggle('active', t.dataset.term === name));
-        termPanes.forEach(p => p.classList.toggle('active', p.dataset.term === name));
-      }
-
-      editorTabs.forEach(t => t.addEventListener('click', () => switchEditorTab(t.dataset.file)));
-      termTabs.forEach(t => t.addEventListener('click', () => {
-        termTabs.forEach(tt => tt.classList.toggle('active', tt.dataset.term === t.dataset.term));
-        termPanes.forEach(p => p.classList.toggle('active', p.dataset.term === t.dataset.term));
-      }));
+      editorTabs.forEach(function(t) { t.addEventListener('click', function() { switchTab(editorTabs, editorPanes, 'file', t.dataset.file); }); });
+      termTabs.forEach(function(t) { t.addEventListener('click', function() { switchTab(termTabs, termPanes, 'term', t.dataset.term); }); });
 
       async function typeIn(pane, text, speed) {
         speed = speed || 30;
-        const line = document.createElement('div');
+        var line = document.createElement('div');
         pane.appendChild(line);
-        for (let i = 0; i < text.length; i++) {
+        for (var i = 0; i < text.length; i++) {
           line.textContent += text[i];
           pane.scrollTop = pane.scrollHeight;
           await sleep(speed);
@@ -638,26 +330,20 @@
       }
 
       function printTo(pane, text, cls) {
-        const line = document.createElement('div');
+        var line = document.createElement('div');
         if (cls) line.className = cls;
         line.textContent = text;
         pane.appendChild(line);
         pane.scrollTop = pane.scrollHeight;
       }
 
-      function annotate(html) {
-        annotation.innerHTML = html;
-        annotation.classList.add('visible');
-      }
+      function annotate(html) { annotation.innerHTML = html; annotation.classList.add('visible'); }
+      function hideAnnotation() { annotation.classList.remove('visible'); }
 
-      function hideAnnotation() {
-        annotation.classList.remove('visible');
-      }
-
-      function setTimeline(sceneIdx) {
-        tlBtns.forEach((btn, i) => {
-          btn.classList.toggle('active', i === sceneIdx);
-          btn.classList.toggle('done', i < sceneIdx);
+      function setTimeline(idx) {
+        tlBtns.forEach(function(btn, i) {
+          btn.classList.toggle('active', i === idx);
+          btn.classList.toggle('done', i < idx);
         });
       }
 
@@ -668,23 +354,20 @@
         hideAnnotation();
         editTarget.textContent = '"hello from linux"';
         editTarget.classList.remove('edited');
-        switchEditorTab('main');
-        switchTermTab('shell');
+        switchTab(editorTabs, editorPanes, 'file', 'main');
+        switchTab(termTabs, termPanes, 'term', 'shell');
         setTimeline(-1);
       }
 
-      // Instantly set up state as if scenes 0..idx-1 already ran
       function setupStateForScene(idx) {
         resetState();
         if (idx >= 1) {
-          // After scene 0: server has output, shell has curl result
           printTo(server, '$ go run .', '');
           printTo(server, 'listening on :8080', 't-muted');
           printTo(shell, '$ curl localhost:8080', '');
           printTo(shell, 'hello from darwin', 't-hl');
         }
         if (idx >= 2) {
-          // After scene 1: graft connected
           printTo(shell, '$ graft connect . user@dev --sync --forward go', '');
           printTo(shell, 'initializing user@dev', 't-muted');
           printTo(shell, 'connected to dev', '');
@@ -692,7 +375,6 @@
           printTo(shell, '  sync:         enabled', 't-muted');
         }
         if (idx >= 3) {
-          // After scene 2: server restarted on remote, curl shows linux
           printTo(server, '^C', '');
           printTo(server, '[dev] $ go run .', '');
           printTo(server, 'listening on :8080', 't-muted');
@@ -703,14 +385,13 @@
 
       async function runScene0() {
         setTimeline(0);
-        switchTermTab('server');
+        switchTab(termTabs, termPanes, 'term', 'server');
         await sleep(400);
         await typeIn(server, '$ go run .');
         printTo(server, 'listening on :8080', 't-muted');
         annotate('running locally on macOS, takes the <em>darwin</em> branch');
         await sleep(1800);
-
-        switchTermTab('shell');
+        switchTab(termTabs, termPanes, 'term', 'shell');
         await sleep(400);
         await typeIn(shell, '$ curl localhost:8080');
         printTo(shell, 'hello from darwin', 't-hl');
@@ -721,7 +402,7 @@
 
       async function runScene1() {
         setTimeline(1);
-        switchTermTab('shell');
+        switchTab(termTabs, termPanes, 'term', 'shell');
         await sleep(200);
         await typeIn(shell, '$ graft connect . user@dev --sync --forward go', 22);
         await sleep(200);
@@ -738,7 +419,7 @@
 
       async function runScene2() {
         setTimeline(2);
-        switchTermTab('server');
+        switchTab(termTabs, termPanes, 'term', 'server');
         await sleep(300);
         await typeIn(server, '^C');
         await sleep(400);
@@ -746,8 +427,7 @@
         printTo(server, 'listening on :8080', 't-muted');
         annotate('<em>go run</em> is forwarded, builds and runs on linux');
         await sleep(800);
-
-        switchTermTab('shell');
+        switchTab(termTabs, termPanes, 'term', 'shell');
         await sleep(300);
         await typeIn(shell, '[dev] $ curl localhost:8080');
         printTo(shell, 'hello from linux', 't-hl');
@@ -767,16 +447,14 @@
         annotate('edited locally, file synced to remote automatically');
         await sleep(1800);
         hideAnnotation();
-
-        switchTermTab('server');
+        switchTab(termTabs, termPanes, 'term', 'server');
         await sleep(300);
         await typeIn(server, '^C');
         await sleep(400);
         await typeIn(server, '[dev] $ go run .');
         printTo(server, 'listening on :8080', 't-muted');
         await sleep(600);
-
-        switchTermTab('shell');
+        switchTab(termTabs, termPanes, 'term', 'shell');
         await sleep(300);
         await typeIn(shell, '[dev] $ curl localhost:8080');
         printTo(shell, 'hey from linux!', 't-hl');
@@ -785,24 +463,17 @@
         hideAnnotation();
       }
 
-      const scenes = [runScene0, runScene1, runScene2, runScene3];
+      var scenes = [runScene0, runScene1, runScene2, runScene3];
 
-      async function runFrom(startScene) {
+      async function runFrom(start) {
         runGen++;
-        const myGen = runGen;
+        var myGen = runGen;
         running = true;
         replayBtn.style.display = 'none';
         hideAnnotation();
-
-        if (startScene > 0) {
-          setupStateForScene(startScene);
-        } else {
-          resetState();
-          await sleep(600);
-        }
-
+        if (start > 0) { setupStateForScene(start); } else { resetState(); await sleep(600); }
         try {
-          for (let i = startScene; i < scenes.length; i++) {
+          for (var i = start; i < scenes.length; i++) {
             if (myGen !== runGen) return;
             await scenes[i]();
           }
@@ -810,31 +481,16 @@
           await sleep(800);
           replayBtn.style.display = 'flex';
           setTimeline(4);
-        } catch (e) {
-          if (e !== 'cancelled') throw e;
-        }
+        } catch (e) { if (e !== 'cancelled') throw e; }
         if (myGen === runGen) running = false;
       }
 
-      // Timeline click handlers
-      tlBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const idx = parseInt(btn.dataset.scene);
-          runFrom(idx);
-        });
+      tlBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() { runFrom(parseInt(btn.dataset.scene)); });
       });
 
-      // Trigger on scroll
-      let started = false;
-      new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !started) {
-          started = true;
-          runFrom(0);
-        }
-      }, { threshold: 0.3 }).observe(document.querySelector('.demo-section'));
-
-      // Replay
-      replayBtn.addEventListener('click', () => { runFrom(0); });
+      runFrom(0);
+      replayBtn.addEventListener('click', function() { runFrom(0); });
     })();
   </script>
 </body>
