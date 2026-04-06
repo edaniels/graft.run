@@ -74,10 +74,17 @@
     /* Hero */
     .hero { max-width: 1000px; margin: 0 auto; padding: 1.5rem 3rem 0; }
     .hero h1 { font-family: var(--serif); font-size: 2.8rem; font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; white-space: nowrap; }
-    .hero-sub { font-size: 1.05rem; line-height: 1.65; color: var(--text-mid); margin-top: 1rem; max-width: 614px; }
-    .hero-getstarted { margin-left: .75rem; font-size: 0.9rem; font-weight: 500; color: var(--terra); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; white-space: nowrap; }
-    .hero-getstarted:hover { border-bottom-color: var(--terra); }
-    .hero-install { margin-top: 1.25rem; }
+    .sub { font-size: 1.05rem; line-height: 1.65; color: var(--text-mid); margin-top: 1rem; display: flex; align-items: baseline; gap: 0.75rem; }
+    .getstarted {
+      flex-shrink: 0; margin-left: auto; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase; color: var(--terra);
+      text-decoration: none; white-space: nowrap;
+      background: rgba(184,92,56,0.05); border: 1px solid var(--terra-light);
+      border-radius: 5px; padding: 0.35rem 0.7rem;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .getstarted:hover { color: #fff; background: var(--terra); border-color: var(--terra); }
+    .install { margin-top: 1.25rem; }
     .install-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
 
     .install-cmd {
@@ -94,10 +101,12 @@
 
     /* Demo */
     .demo-section { max-width: 1000px; margin: 1rem auto 0; padding: 0.75rem 3rem; }
+    .demo-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
 
     .demo-container {
       display: flex; border-radius: 10px; overflow: hidden;
       border: 1px solid var(--rule); height: 420px; position: relative;
+      margin-top: 0.6rem;
       box-shadow: 0 2px 20px rgba(45,36,24,0.06), 0 0 0 1px rgba(45,36,24,0.03);
     }
     .demo-editor { width: 50%; background: var(--code-bg-warm); position: relative; border-right: 1px solid var(--rule); overflow: hidden; }
@@ -152,7 +161,7 @@
     #replay-btn:hover { color: var(--terra); border-color: var(--terra-light); }
     #replay-btn svg { width: 13px; height: 13px; }
 
-    .demo-timeline { display: flex; margin-top: 0.5rem; }
+    .demo-timeline { display: flex; }
     .demo-timeline button {
       flex: 1; background: var(--warm-bg); border: 1px solid var(--rule);
       color: var(--text-muted); font-family: var(--sans); font-size: 0.68rem;
@@ -177,7 +186,7 @@
       .nav { padding: 1rem 1.5rem 0; }
       .hero { padding: 1.5rem 1.5rem 0; }
       .hero h1 { font-size: 1.6rem; white-space: normal; }
-      .hero-sub { max-width: none; }
+      .sub { max-width: none; }
       .install-cmd { font-size: 0.7rem; }
       .demo-section { padding: 1rem 1.5rem; }
       .demo-container { flex-direction: column; height: auto; }
@@ -191,7 +200,7 @@
     @media (max-width: 480px) {
       .hero { padding: 1.5rem 1rem 1rem; }
       .hero h1 { font-size: 1.75rem; }
-      .hero-sub { font-size: 0.95rem; }
+      .sub { font-size: 0.95rem; }
       .install-cmd { font-size: 0.65rem; padding: 0.45rem 0.6rem; }
       .install-cmd code { white-space: normal; word-break: break-all; }
       footer { padding: 0.5rem 1rem; }
@@ -217,8 +226,11 @@
 
   <section class="hero">
     <h1>Stay local.</h1>
-    <p class="hero-sub">Keep your editor, your dotfiles, your workflow. Work with remote files and commands as if they were local.<a class="hero-getstarted" href="https://github.com/edaniels/graft?tab=readme-ov-file#quick-start">Quick Start &rarr;</a></p>
-    <div class="hero-install">
+    <div class="sub">
+      <span>Keep your editor, your dotfiles, your workflow.<br>Work with remote files and commands as if they were local.</span>
+      <a class="getstarted" href="https://github.com/edaniels/graft?tab=readme-ov-file#quick-start">Quick Start &rarr;</a>
+    </div>
+    <div class="install">
       <div class="install-label">Install Graft</div>
       <div class="install-cmd" onclick="copyInstall(this)">
         <code>curl --proto '=https' --tlsv1.2 -sSf https://graft.run/install.sh | sh</code>
@@ -233,6 +245,13 @@
   </section>
 
   <section class="demo-section">
+    <div class="demo-label">See it in action</div>
+    <div class="demo-timeline">
+      <button data-scene="0">1. Run locally</button>
+      <button data-scene="1">2. Connect graft</button>
+      <button data-scene="2">3. Run on remote</button>
+      <button data-scene="3">4. Edit + sync</button>
+    </div>
     <div class="demo-container">
       <div class="demo-editor">
         <div class="editor-tabs">
@@ -274,12 +293,6 @@
       </button>
     </div>
     <div id="demo-annotation"></div>
-    <div class="demo-timeline">
-      <button data-scene="0">1. Run locally</button>
-      <button data-scene="1">2. Connect graft</button>
-      <button data-scene="2">3. Run on remote</button>
-      <button data-scene="3">4. Edit + sync</button>
-    </div>
   </section>
 
   <footer>
